@@ -1,0 +1,7 @@
+@function shopify_setting($setting) {
+  @return unquote('"{{ settings.' + $setting + ' }}"');
+}
+
+@function shopify_asset($file) {
+  @return unquote('url(\'"{{ "' + $file + '" | asset_url }}"\') ');
+}

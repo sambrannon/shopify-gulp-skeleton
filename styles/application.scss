@@ -1,0 +1,15 @@
+// This file is the main stylesheet that will compile via Gulp
+// to the assets/application.css file
+
+// Functions
+@import 'functions/shopify-helpers';
+
+// Utilities
+@import 'utilities/variables';
+
+// Mixins
+
+// Globals
+@import 'globals/global';
+
+// Components
