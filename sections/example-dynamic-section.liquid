@@ -1,0 +1,64 @@
+{% schema %}
+{
+  "name": "Example Dynamic Section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "id": "text_box",
+      "type": "text",
+      "label": "Heading",
+      "default": "Title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "select",
+      "name": "Add Button",
+      "settings": [
+        {
+          "id": "link",
+          "type": "url",
+          "label": "Button link"
+        },
+        {
+          "id": "linktext",
+          "type": "text",
+          "label": "Button text",
+          "default": "Click here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Example Dynamic Section",
+      "category": "Examples",
+      "blocks": [
+        {
+          "type": "select"
+        },
+        {
+          "type": "select"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% comment %}
+
+Sections with "presets" will be included as dynamic sections, those without will not
+but can be added via {% section 'filename' %} in a template
+
+{% endcomment %}
+
+<section class="example-section">
+  {{ section.settings.text_box }}
+
+  {% for block in section.blocks %}
+    <div class="btn" id="call-to-action">
+      <a href="{{ block.settings.link }}" class="btn">{{ block.settings.linktext }}</a>
+    </div>
+  {% endfor %}
+</section>

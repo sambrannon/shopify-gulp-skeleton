@@ -6,6 +6,11 @@ const replace = require('gulp-replace');
 const headerComment = require('gulp-header-comment');
 // const through2 = require('through2');
 
+const themeSettings = {
+  styleDir: './styles',
+  assetDir: './assets',
+}
+
 // uncomment to enable scss sourcemaps
 // const sourcemaps = require('gulp-sourcemaps');
 
@@ -14,7 +19,7 @@ const sassConfig = {
 };
 
 function scss() {
-  return src('./scss/**/*.scss')
+  return src(`${themeSettings.styleDir}/**/*.scss`)
     // need to init sourcemaps first to write them later
     // uncomment to enable scss sourcemaps
     // .pipe(sourcemaps.init())
@@ -58,11 +63,11 @@ function scss() {
     // }))
 
     // write compiled scss files to shopify's asset directory
-    .pipe(dest('./assets/'));
+    .pipe(dest(`${themeSettings.assetDir}/`));
 }
 
 exports.styleWatch = function() {
-  watch('scss/*.scss', scss);
+  watch(`${themeSettings.styleDir}/**/*.scss`, scss);
 };
 
 exports.default = scss;

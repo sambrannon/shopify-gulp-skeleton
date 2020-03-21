@@ -1,0 +1,31 @@
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color",
+      "label": "Text Color",
+      "default": "#000000"
+    }
+  ]
+}
+{% endschema %}
+
+<section
+  class="site-footer"
+  style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.color }}"
+>
+  Footer content...
+</section>
