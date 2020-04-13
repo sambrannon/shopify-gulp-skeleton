@@ -4,23 +4,22 @@ const autoprefixer = require('gulp-autoprefixer');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
 const headerComment = require('gulp-header-comment');
-// const through2 = require('through2');
+const through2 = require('through2');
+
+// uncomment to enable scss sourcemaps
+// const sourcemaps = require('gulp-sourcemaps');
 
 const themeSettings = {
   styleDir: './styles',
   assetDir: './assets',
 }
 
-// uncomment to enable scss sourcemaps
-// const sourcemaps = require('gulp-sourcemaps');
-
 const sassConfig = {
   outputStyle: 'expanded',
 };
 
-function scss() {
-  return src(`${themeSettings.styleDir}/**/*.scss`)
-    // need to init sourcemaps first to write them later
+function scss(cb) {
+  src(`${themeSettings.styleDir}/**/*.scss`)
     // uncomment to enable scss sourcemaps
     // .pipe(sourcemaps.init())
 
@@ -30,7 +29,6 @@ function scss() {
     // default autoprefixer
     .pipe(autoprefixer())
 
-    // write sourcemaps to compiled file
     // uncomment to enable scss sourcemaps
     // .pipe(sourcemaps.write())
 
@@ -53,21 +51,24 @@ function scss() {
       ---
     `))
 
-    // TODO this needs to be fixed
     // manually change timestamp to avoid a gulp bug
     // ref: https://github.com/Shopify/themekit/issues/607#issuecomment-455042157
-    // .pipe(through2.obj((chunk, enc) => {
-    //   let date = new Date();
-    //   chunk.stat.atime = date;
-    //   chunk.stat.mtime = date;
-    // }))
+    .pipe(through2.obj((chunk, enc, cb) => {
+      let date = new Date();
+      chunk.stat.atime = date;
+      chunk.stat.mtime = date;
+      cb(null, chunk);
+    }))
 
     // write compiled scss files to shopify's asset directory
     .pipe(dest(`${themeSettings.assetDir}/`));
+
+    cb();
 }
 
-exports.styleWatch = function() {
+exports.styleWatch = function(cb) {
   watch(`${themeSettings.styleDir}/**/*.scss`, scss);
+  cb();
 };
 
 exports.default = scss;
