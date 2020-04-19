@@ -10,30 +10,82 @@ The overall Skeleton is built using Shopify's [Theme Kit](https://shopify.github
 
 ## Setting up theme development
 
-Install [Theme Kit](http://shopify.github.io/themekit/). More detailed instructions can be found [here](http://shopify.github.io/themekit/).
+### 1. Install Theme Kit
+
+See if it's already installed, skip if so:
+
+```shell
+$ theme --help
+```
+
+More detailed instructions can be found [here](http://shopify.github.io/themekit/).
 
 ```shell
 $ brew tap shopify/shopify
 $ brew install themekit
 ```
 
+### 2. Clone this skeleton
+
+```shell
+$ cd path/to/projects
+$ git clone git@github.com:sambrannon/shopify-gulp-skeleton.git PROJECT_NAME
+```
+
+### 3. Clone theme on store
+
+Shopify is weird, we need an ID to do a theme sync, but that ID can only be grabbed from an existing theme. You can create it via CLI, but it will make this skeleton harder to use.
+
+1. Go to https://STORE_NAME.myshopify.com/admin/themes
+2. Select current theme > Actions > Duplicate
+3. Rename duplicated theme to whatever you'd like
+
+### 4. Get ID of new theme
+
+```shell
+$ theme get --list -p=PASSWORD_WITHOUT_QUOTES -s=STORE_NAME.myshopify.com
+```
+
+### 5. Fill out config
+
 From the project root directory, add a `config.yml` file and fill it out according to the `config.yml.example` file.
 
 Your API key can be found via https://site-name.myshopify.com/admin/apps/private.
 
-TODO: Add docs for deploying a new theme entirely from local without using `theme new...`...
+Apply theme ID to config.yml, ie:
 
-```shell
-$ theme configure --password=[your-password] --store=[you-store.myshopify.com] --themeid=[your-theme-id]
+```yml
+development:
+  password: PASSWORD_FROM_PRIVATE_APP
+  theme_id: THEME_ID
+  store: SHOP_NAME.myshopify.com
 ```
 
-From there, start a theme watch to keep the live site in sync.
+### 6. Update `settings_schema.json`
+
+Update the values in the default schema file.
+
+Note: `"name": "theme_info",` needs to stay as-is!
+
+### 7. Sync Initial Theme
+
+```shell
+$ theme deploy
+```
+
+This will kick off an initial deploy and copy all your local files to Shopify, deleting what was there before.
+
+## Working on theme
+
+### Running Theme Watch
+
+Once you are set up, start a theme watch to keep the live site in sync.
 
 ```shell
 $ theme watch
 ```
 
-## Gulp
+### Running Gulp to process styles
 
 Gulp is used in tandem with some custom Shopify-friendly scss mixins (/styles/functions/_shopify-helpers.scss)
 
